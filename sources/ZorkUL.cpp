@@ -44,7 +44,7 @@ void ZorkUL::createRooms()  {
     i->setExits(NULL, d, NULL, NULL);
     myRoom->setExits(b,NULL, g,NULL);
 
-        currentRoom = a;
+        currentRoom = myRoom;
 }
 
 /**

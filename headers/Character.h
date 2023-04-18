@@ -1,6 +1,6 @@
-/*#ifndef CHARACTER_H_
+#ifndef CHARACTER_H_
 #define CHARACTER_H_
-#include "ZorkUL.h"
+#include "item.h"
 
 #include <string>
 using namespace std;
@@ -11,9 +11,11 @@ using std::vector;
 class Character {
 private:
 	string description;
-	 vector < string > itemsInCharacter;
+     vector < Item > itemsInCharacter;
 public:
-	void addItems(string Item);
+    void addItems(Item *Item);
+    void putItems(Item *Item);
+    Item hasItem(string name);
 
 
 
@@ -21,7 +23,7 @@ public:
 public:
 	Character(string description);
 	string shortDescription();
-	string longDescription();
+    string printInventory();
 
 };
 
