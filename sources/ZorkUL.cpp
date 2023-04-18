@@ -153,12 +153,17 @@ bool ZorkUL::processCommand(Command command) {
             }
             else {
                 cout << "And you manage to sucessfully" << endl;
+
                 currentRoom->addItem(&itemToPut);
+                currentCharacter->putItems(&itemToPut);
                 cout << currentRoom->longDescription() << endl;
             }
             }
     }
 
+    else if (commandWord.compare("inventory") == 0){
+            currentCharacter->printInventory();
+    }
 
     else if (commandWord.compare("quit") == 0) {
 		if (command.hasSecondWord())
