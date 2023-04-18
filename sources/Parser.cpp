@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "headers/Parser.h"
 
 Parser::Parser() {
 	commands = new CommandWords();

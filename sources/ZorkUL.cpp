@@ -1,9 +1,9 @@
 #include <iostream>
 
 using namespace std;
-#include "ZorkUL.h"
+#include "headers/ZorkUL.h"
 
-int main(int argc, char argv[]) {
+int main(int argc, char *argv[]) {
 	ZorkUL temp;
 	temp.play();
 	return 0;
@@ -14,7 +14,7 @@ ZorkUL::ZorkUL() {
 }
 
 void ZorkUL::createRooms()  {
-	Room *a, *b, *c, *d, *e, *f, *g, *h, *i;
+    Room *a, *b, *c, *d, *e, *f, *g, *h, *i, *myRoom;
 
 	a = new Room("a");
         a->addItem(new Item("x", 1, 11));
@@ -29,17 +29,20 @@ void ZorkUL::createRooms()  {
 	g = new Room("g");
 	h = new Room("h");
 	i = new Room("i");
+    myRoom = new Room("MyRoom");
+    myRoom->addItem(new Item("Seed", 1, 2));
 
 //             (N, E, S, W)
 	a->setExits(f, b, d, c);
-	b->setExits(NULL, NULL, NULL, a);
+    b->setExits(NULL, NULL, myRoom, a);
 	c->setExits(NULL, a, NULL, NULL);
 	d->setExits(a, e, NULL, i);
 	e->setExits(NULL, NULL, NULL, d);
 	f->setExits(NULL, g, a, h);
-	g->setExits(NULL, NULL, NULL, f);
+    g->setExits(myRoom, NULL, NULL, f);
 	h->setExits(NULL, f, NULL, NULL);
     i->setExits(NULL, d, NULL, NULL);
+    myRoom->setExits(b,NULL, g,NULL);
 
         currentRoom = a;
 }
