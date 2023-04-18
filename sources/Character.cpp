@@ -11,6 +11,13 @@ void Character::putItems(Item *item) {
     delete item;
 }
 
+Item Character::hasItem(string name){
+    for (Item i : itemsInCharacter)
+        if(i.getShortDescription().compare(name) == 0)
+            return i;
+    Item* temp = new Item("Nothing");
+    return *temp;
+}
 
 string Character::printInventory()
 {
