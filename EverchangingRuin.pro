@@ -10,7 +10,8 @@ SOURCES += \
     sources/Parser.cpp \
     sources/Room.cpp \
     sources/ZorkUL.cpp \
-    sources/item.cpp
+    sources/item.cpp \
+    sources/mainwindow.cpp
 
 HEADERS += \
     headers/Character.h \
@@ -20,3 +21,5 @@ HEADERS += \
     headers/Room.h \
     headers/ZorkUL.h \
     headers/item.h
+
+FORMS +=
