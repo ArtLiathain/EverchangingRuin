@@ -11,7 +11,6 @@ SOURCES += \
     sources/Room.cpp \
     sources/ZorkUL.cpp \
     sources/item.cpp \
-    sources/mainwindow.cpp
 
 HEADERS += \
     headers/Character.h \
