@@ -171,6 +171,22 @@ bool ZorkUL::processCommand(Command command) {
             currentCharacter->printInventory();
     }
 
+    else if (commandWord.compare("transform") == 0){
+            if (command.hasSecondWord()) {
+            if(currentCharacter->getFormNumber(command.getSecondWord()) != -1){
+                currentCharacter->setForm(currentCharacter->getFormNumber(command.getSecondWord()));
+                cout << "You transformed into a " << command.getSecondWord() << endl;
+            }
+            else {
+                cout << "Not a valid transformation" << endl;
+            }
+            }
+    }
+
+    else if (commandWord.compare("check") == 0){
+            cout << currentCharacter->getCurrentForm() << endl;
+    }
+
     else if (commandWord.compare("quit") == 0) {
 		if (command.hasSecondWord())
 			cout << "overdefined input"<< endl;
