@@ -21,37 +21,43 @@ void ZorkUL::createCharacter(){
 }
 
 void ZorkUL::createRooms()  {
-    Room *a, *b, *c, *d, *e, *f, *g, *h, *i, *myRoom;
+    Room *MeerkatStatue, *OpenRoomLight, *TreeRoom, *BeeStatue, *MiniOcean, *CrossRoads, *BeeTrial,
+    *LobsterStatue, *Cobwebs, *ElephantStatue, *EmptyHallway ,*BreakableWallRoom, *RedHot,*Chasm, *FlowerRoom;
 
-	a = new Room("a");
-        a->addItem(new Item("x", 1, 11));
-        a->addItem(new Item("y", 2, 22));
-	b = new Room("b");
-        b->addItem(new Item("xx", 3, 33));
-        b->addItem(new Item("yy", 4, 44));
-	c = new Room("c");
-	d = new Room("d");
-	e = new Room("e");
-	f = new Room("f");
-	g = new Room("g");
-	h = new Room("h");
-	i = new Room("i");
-    myRoom = new Room("MyRoom");
-    myRoom->addItem(new Item("Seed", 1, 2));
-
+    MeerkatStatue = new Room("MeerkatStatue");
+        MeerkatStatue->addItem(new Item("MeerkatStatue", 1, 11));
+    OpenRoomLight = new Room("OpenRoomLight");
+    TreeRoom = new Room("TreeRoom");
+    BeeStatue = new Room("BeeStatue");
+    MiniOcean = new Room("MiniOcean");
+    CrossRoads = new Room("CrossRoads");
+    BeeTrial = new Room("BeeTrial");
+    LobsterStatue = new Room("LobsterStatue");
+    Cobwebs = new Room("Cobwebs");
+    ElephantStatue = new Room("ElephantStatue");
+    EmptyHallway = new Room("EmptyHallway");
+    BreakableWallRoom = new Room("BreakableWallRoom");
+    RedHot = new Room("RedHot");
+    Chasm = new Room("Chasm");
+    FlowerRoom = new Room("FlowerRoom");
 //             (N, E, S, W)
-	a->setExits(f, b, d, c);
-    b->setExits(NULL, NULL, myRoom, a);
-	c->setExits(NULL, a, NULL, NULL);
-	d->setExits(a, e, NULL, i);
-	e->setExits(NULL, NULL, NULL, d);
-	f->setExits(NULL, g, a, h);
-    g->setExits(myRoom, NULL, NULL, f);
-	h->setExits(NULL, f, NULL, NULL);
-    i->setExits(NULL, d, NULL, NULL);
-    myRoom->setExits(b,NULL, g,NULL);
+    MeerkatStatue->setExits(NULL, OpenRoomLight, NULL, NULL);
+    OpenRoomLight->setExits(TreeRoom, MiniOcean, NULL, MeerkatStatue);
+    TreeRoom->setExits(BeeStatue, NULL, OpenRoomLight, NULL);
+    BeeStatue->setExits(NULL,RedHot,TreeRoom,NULL);
+    MiniOcean->setExits(NULL, CrossRoads, NULL, OpenRoomLight);
+    CrossRoads->setExits(Cobwebs, Chasm, BeeTrial, MiniOcean);
+    BeeTrial->setExits(CrossRoads, NULL, LobsterStatue, NULL);
+    LobsterStatue->setExits(BeeTrial, NULL, NULL, NULL);
+    Cobwebs->setExits(ElephantStatue, NULL, CrossRoads, BreakableWallRoom);
+    ElephantStatue->setExits(NULL,NULL,Cobwebs, EmptyHallway);
+    EmptyHallway->setExits(NULL,ElephantStatue, BreakableWallRoom, NULL);
+    RedHot->setExits(NULL, BreakableWallRoom,NULL , BeeStatue);
+    BreakableWallRoom->setExits(EmptyHallway, Cobwebs, NULL, RedHot);
+    Chasm->setExits(NULL, FlowerRoom, NULL, CrossRoads);
+    FlowerRoom->setExits(NULL,NULL,NULL,Chasm);
 
-        currentRoom = myRoom;
+        currentRoom = MeerkatStatue;
 }
 
 /**
