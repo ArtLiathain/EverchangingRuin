@@ -1,4 +1,4 @@
-#include "headers/Character.h"
+#include "Character.h"
 
 Character::Character(string description) {
 	this->description = description;
@@ -10,7 +10,7 @@ Character::Character(string description) {
     availableForms.push_back("elephant");
 }
 void Character::addItems(Item *item) {
-    itemsInCharacter.push_back(*item);
+    itemsInCharacter.push_back(item);
 }
 void Character::putItems(Item *item) {
     int location = getItemIndex(item);
@@ -26,24 +26,24 @@ int Character::getItemIndex(Item *item){
     string name = item->getShortDescription();
     int size = itemsInCharacter.size();
     for (int i = 0; i < size; i++){
-        if(itemsInCharacter[i].getShortDescription().compare(name) == 0)
+    if(itemsInCharacter[i]->getShortDescription().compare(name) == 0)
             return i;
     }
     return -1;
 }
 
-Item Character::hasItem(string name){
-    for (Item i : itemsInCharacter)
-        if(i.getShortDescription().compare(name) == 0)
+Item* Character::hasItem(string name){
+    for (Item* i : itemsInCharacter)
+    if(i->getShortDescription().compare(name) == 0)
             return i;
     Item* temp = new Item("Nothing");
-    return *temp;
+    return temp;
 }
 
 string Character::printInventory()
 {
-    for (Item i : itemsInCharacter)
-        cout << (i).getShortDescription() << endl;
+    for (Item* i : itemsInCharacter)
+    cout << (i)->getShortDescription() << endl;
     return "";
 }
 

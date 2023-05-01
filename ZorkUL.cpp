@@ -1,12 +1,19 @@
 #include <iostream>
 
 using namespace std;
-#include "headers/ZorkUL.h"
+#include "ZorkUL.h"
+#include "mainwindow.h"
+#include <QApplication>
+
 
 int main(int argc, char *argv[]) {
 	ZorkUL temp;
-	temp.play();
-	return 0;
+
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+    temp.play();
+    return a.exec();;
 }
 
 ZorkUL::ZorkUL() {
@@ -65,20 +72,19 @@ void ZorkUL::createRooms()  {
  */
 void ZorkUL::play() {
 	printWelcome();
-
 	// Enter the main command loop.  Here we repeatedly read commands and
 	// execute them until the ZorkUL game is over.
 
 	bool finished = false;
-	while (!finished) {
-		// Create pointer to command and give it a command.
-		Command* command = parser.getCommand();
-		// Pass dereferenced command and check for end of game.
-		finished = processCommand(*command);
-		// Free the memory allocated by "parser.getCommand()"
-		//   with ("return new Command(...)")
-		delete command;
-	}
+//	while (!finished) {
+//		// Create pointer to command and give it a command.
+//		Command* command = parser.getCommand();
+//		// Pass dereferenced command and check for end of game.
+//		finished = processCommand(*command);
+//		// Free the memory allocated by "parser.getCommand()"
+//		//   with ("return new Command(...)")
+//		delete command;
+//	}
 	cout << endl;
 	cout << "end" << endl;
 }
@@ -152,16 +158,16 @@ bool ZorkUL::processCommand(Command command) {
         else
             if (command.hasSecondWord()) {
             cout << "you're adding " + command.getSecondWord() << endl;
-            Item itemToPut = currentCharacter->hasItem(command.getSecondWord());
-            if(itemToPut.getShortDescription().compare("Nothing") == 0){
+            Item* itemToPut = currentCharacter->hasItem(command.getSecondWord());
+            if(itemToPut->getShortDescription().compare("Nothing") == 0){
                 cout << "But you have none of it!" << endl;
                 cout << currentRoom->longDescription() << endl;
             }
             else {
                 cout << "And you manage to sucessfully" << endl;
 
-                currentRoom->addItem(&itemToPut);
-                currentCharacter->putItems(&itemToPut);
+                currentRoom->addItem(itemToPut);
+                currentCharacter->putItems(itemToPut);
                 cout << currentRoom->longDescription() << endl;
             }
             }

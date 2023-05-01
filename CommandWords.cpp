@@ -1,4 +1,4 @@
-#include "headers/CommandWords.h"
+#include "CommandWords.h"
 
 vector<string> CommandWords::validCommands;
 

@@ -1,5 +1,5 @@
-#include "headers/Room.h"
-#include "headers/Command.h"
+#include "Room.h"
+#include "Command.h"
 
 
 Room::Room(string description) {
@@ -44,7 +44,7 @@ Room* Room::nextRoom(string direction) {
 void Room::addItem(Item *inItem) {
     //cout <<endl;
     //cout << "Just added" + inItem->getLongDescription();
-    itemsInRoom.push_back(*inItem);
+    itemsInRoom.push_back(inItem);
 }
 
 string Room::displayItem() {
@@ -56,7 +56,7 @@ string Room::displayItem() {
     else if (itemsInRoom.size() > 0) {
        int x = (0);
         for (int n = sizeItems; n > 0; n--) {
-            tempString = tempString + itemsInRoom[x].getShortDescription() + "  " ;
+           tempString = tempString + itemsInRoom[x]->getShortDescription() + "  " ;
             x++;
             }
         }
@@ -77,7 +77,7 @@ int Room::isItemInRoom(string inString)
        int x = (0);
         for (int n = sizeItems; n > 0; n--) {
             // compare inString with short description
-            int tempFlag = inString.compare( itemsInRoom[x].getShortDescription());
+            int tempFlag = inString.compare( itemsInRoom[x]->getShortDescription());
             if (tempFlag == 0) {
                 return x;
             }
@@ -89,7 +89,7 @@ int Room::isItemInRoom(string inString)
 
 Item* Room::getItemFromRoom(int location)
 {
-    return &itemsInRoom[location];
+    return itemsInRoom[location];
 }
 
 void Room::removeItemFromRoom(int location)
