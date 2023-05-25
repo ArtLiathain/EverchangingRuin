@@ -1,16 +1,20 @@
 #include <iostream>
+#include <QDebug>
+
 
 using namespace std;
 #include "../headers/Model.h"
 
-Model::Model() {
+Model::Model(QObject* parent)
+    : QObject(parent) {
+    currentStringState = "";
 	createRooms();
     createCharacter();
 }
 
 void Model::createCharacter(){
     Character *Tim;
-    Tim = new Character("Tim");
+    Tim = new Meerkat("Tim");
     currentCharacter = Tim;
 }
 
@@ -90,11 +94,11 @@ void Model::processCommand(Command command) {
         }
 
         else if (commandWord.compare("inventory") == 0){
-            currentCharacter->printInventory();
+            currentStringState =  currentCharacter->printInventory();
         }
 
         else if (commandWord.compare("check") == 0){
-            cout << currentCharacter->getCurrentForm() << endl;
+            currentStringState = currentCharacter->getCurrentForm();
         }
 
         else if (commandWord.compare("quit") == 0) {
@@ -104,21 +108,21 @@ void Model::processCommand(Command command) {
     }
 
     if (commandWord.compare("go") == 0)
-        go(command.getSecondWord());
+        currentStringState =  go(command.getSecondWord());
 
     else if (commandWord.compare("take") == 0)
     {
-        cout << takeItem(command.getSecondWord());
+        currentStringState = takeItem(command.getSecondWord());
     }
 
     else if (commandWord.compare("put") == 0)
     {
-        cout << putItem(command.getSecondWord());
+        currentStringState = putItem(command.getSecondWord());
 
     }
 
     //maybe make the function retrun stuff or break out if it finished/finds a command
-
+    emit dataChanged();
 
 
 
@@ -130,22 +134,26 @@ void Model::printHelp() {
 
 }
 
-void Model::processString(string command){
-    cout << "temp" << endl;
+void Model::processString(string text){
+    Command* command = parser.getCommand(text);
+    processCommand(*command);
 }
 
 string Model::go(string direction) {
+
 //	Make the direction lowercase
     //transform(direction.begin(), direction.end(), direction.begin(),:: tolower);
 	//Move to the next room
-	Room* nextRoom = currentRoom->nextRoom(direction);
-    if (nextRoom == NULL)
-        return("Can't go that way! \n" + currentRoom->longDescription());
-	else
-	{
-		currentRoom = nextRoom;
-		return currentRoom->longDescription();
+    Room* nextRoom = currentRoom->nextRoom(direction);
+    if (nextRoom == NULL){
+        return("Can't go that way!");
+}
+    else
+    {
+        currentRoom = nextRoom;
+        return "";
     }
+
 }
 
 string Model::returnCurrentRoom(){
@@ -155,38 +163,39 @@ string Model::returnCurrentRoom(){
 string Model::takeItem(string item){
     string returnString = "";
     cout << "you're trying to take " + item << endl;
-    int location = currentRoom->isItemInRoom(item);
-    if (location  < 0 ){
-        returnString += "item is not in room \n";
-        returnString += currentRoom->longDescription() + "\n";
+    Item* currentItem = currentRoom->isItemInRoom(item);
+    if (!currentItem ){
+        return "item is not in room \n";
     }
-    else{
-        returnString += "item is in room \n";
-        returnString += "index number " + to_string(location) + "\n";
-        Item* currentItem = currentRoom->getItemFromRoom(location);
-        currentCharacter->addItems(currentItem);
-        currentRoom->removeItemFromRoom(location);
-        cout << currentRoom->longDescription() << endl;
-    }
+    returnString += "item is in room \n";
+    currentCharacter->addItems(currentItem);
+    currentRoom->removeItemFromRoom(currentItem);
+
 
     return returnString;
 }
 
 string Model::putItem(string item){
     string returnString = "";
-    returnString += "you're adding " + item + "\n";
+
     Item* itemToPut = currentCharacter->hasItem(item);
     if(!itemToPut){
-        returnString += "But you have none of it! \n";
+        returnString += "You don't have this item \n";
         returnString += currentRoom->longDescription() + "\n";
         return returnString;
     }
+    returnString += "you're adding " + item + "\n";
     returnString += "And you manage to sucessfully \n";
     currentRoom->addItem(itemToPut);
     currentCharacter->putItems(itemToPut);
-//    cout << currentRoom->longDescription() << endl;
-
     return returnString;
+}
+
+
+
+string Model::getState(){
+    string stringToReturn = currentRoom->longDescription() +"\n\n" + currentStringState;
+    return stringToReturn;
 }
 
 

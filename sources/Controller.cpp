@@ -1,14 +1,9 @@
 #include "../headers/Controller.h"
 #include <QApplication>
+#include <QDebug>
 
-int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
-    MainWindow view;
-    Model game;
-    Controller controller(&game, &view);
-    view.show();
-    return a.exec();
-}
+
+
 
 Controller::Controller(Model *model, MainWindow *mainWindow, QObject* parent)
     : QObject(parent){
@@ -21,23 +16,31 @@ void Controller::updateModel(string command){
 }
 
 void Controller::connectComponents(){
-    connect(view, &MainWindow::onDirectionButtonPressed, this, &Controller::onDirectionButtonPressed);
-
+    connect(view, &MainWindow::directionButtonPressed, this, &Controller::onDirectionButtonPressed);
+    connect(view, &MainWindow::consoleUsed, this, &Controller::onConsoleUsed);
+    connect(game, &Model::dataChanged, this, &Controller::updateView);
 }
 
 
-void Controller::onDirectionButtonPressed(){
-    QPushButton* button = qobject_cast<QPushButton*>(sender());
-    if (button) {
-        QString buttonName = button->objectName();
-        QString qstr = QString::fromStdString(temp.go(buttonName.toStdString()));
+void Controller::onDirectionButtonPressed(QString buttonName){
+    game->processString("go " + buttonName.toStdString());
 
-        Console->setText(qstr);
+}
+
+void Controller::updateView()
+{
+    string text = game->getState();
+    QString qText = QString::fromStdString(text);
+    view->updateText(qText);
+}
+
+void Controller::onConsoleUsed(QString text){
+    string normaltext = text.toStdString();
+    for (int index  = 0; index  < normaltext.length(); index++ ) {
+        normaltext[index] = tolower(normaltext[index]);
     }
-
+    game->processString(normaltext);
 }
-
-
 
 
 

@@ -6,7 +6,7 @@
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::EverchangingRuin)
 {
     ui->setupUi(this);
     myTextField = ui->MyLineEdit;
@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->south, &QPushButton::pressed, this, &MainWindow::onDirectionButtonPressed);
     QObject::connect(ui->east, &QPushButton::pressed, this, &MainWindow::onDirectionButtonPressed);
     QObject::connect(ui->west, &QPushButton::pressed, this, &MainWindow::onDirectionButtonPressed);
+
 }
 
 MainWindow::~MainWindow()
@@ -28,25 +29,23 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::onLineEditReturnPressed(){
-
-    QString text = myTextField->text();
-    QString qstr = QString::fromStdString("\n" + temp.go(text.toStdString()));
-
-    Console->setText(Console->toPlainText() + qstr);
+    emit consoleUsed(myTextField->text());
     myTextField->setText("");
 
 }
+
+
 
 void MainWindow::onDirectionButtonPressed(){
     QPushButton* button = qobject_cast<QPushButton*>(sender());
     if (button) {
         QString buttonName = button->objectName();
-        QString qstr = QString::fromStdString(temp.go(buttonName.toStdString()));
 
-        Console->setText(qstr);
+        qDebug("Ran 22");
+        emit directionButtonPressed(buttonName);
     }
-
 }
 
-
-
+void MainWindow::updateText(QString text){
+    Console->setText(text);
+}

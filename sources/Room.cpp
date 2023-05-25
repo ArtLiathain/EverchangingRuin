@@ -67,24 +67,9 @@ int Room::numberOfItems() {
     return itemsInRoom.size();
 }
 
-int Room::isItemInRoom(string inString)
+Item* Room::isItemInRoom(string inString)
 {
-    int sizeItems = (itemsInRoom.size());
-    if (itemsInRoom.size() < 1) {
-        return false;
-        }
-    else if (itemsInRoom.size() > 0) {
-       int x = (0);
-        for (int n = sizeItems; n > 0; n--) {
-            // compare inString with short description
-            int tempFlag = inString.compare( itemsInRoom[x]->getShortDescription());
-            if (tempFlag == 0) {
-                return x;
-            }
-            x++;
-            }
-        }
-    return -1;
+    return hasThing(inString, itemsInRoom);
 }
 
 Item* Room::getItemFromRoom(int location)
@@ -92,8 +77,9 @@ Item* Room::getItemFromRoom(int location)
     return itemsInRoom[location];
 }
 
-void Room::removeItemFromRoom(int location)
+void Room::removeItemFromRoom(Item* itemToRemove)
 {
+    int location = indexOfThing(itemToRemove, itemsInRoom);
     itemsInRoom.erase(itemsInRoom.begin()+location);
 }
 

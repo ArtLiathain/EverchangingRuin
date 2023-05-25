@@ -4,28 +4,23 @@ Parser::Parser() {
 	commands = new CommandWords();
 }
 
-Command* Parser::getCommand() {
+Command* Parser::getCommand(string input) {
 	string inputLine = ""; // will hold the full input line
 	string word1;
 	string word2;
-	string buffer;
 	vector<string> words;
-
-	cout << "> "; // print prompt
-
-	getline(cin, buffer, '\n');	// read a line from cin to "buffer"
 
 	string::size_type pos = 0, last_pos = 0;
 
 	// Break "buffer" up by spaces
 	bool finished = false;
 	while (!finished) {
-		pos = buffer.find_first_of(' ', last_pos);	// find and remember first space.
+        pos = input.find_first_of(' ', last_pos);	// find and remember first space.
 		if (pos == string::npos ) {			// if we found the last word,
-			words.push_back(buffer.substr(last_pos));	// add it to vector "words"
+            words.push_back(input.substr(last_pos));	// add it to vector "words"
 			finished = true;				// and finish searching.
 		} else {					// otherwise add to vector and move on to next word.
-			words.push_back(buffer.substr(last_pos, pos - last_pos));
+            words.push_back(input.substr(last_pos, pos - last_pos));
 			last_pos = pos + 1;
 		}
 	}
